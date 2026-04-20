@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workout Tracker - Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Workout Tracker</div>
+            <ul>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="planner.html">Planner</a></li>
+                <li><a href="history.html">History</a></li>
+                <li><a href="profile.html">Profile</a></li>
+                <li><a href="#" id="logout">Reset Data</a></li>
+            </ul>
+            <div class="theme-toggle">
+                <i class="fas fa-moon"></i>
+            </div>
+        </nav>
+    </header>
+
+    <main class="dashboard">
+        <div class="dashboard-header">
+            <div class="header-content">
+                <h1>Welcome back, <span id="userName">User</span>! 💪</h1>
+                <p class="header-subtitle">Keep up the great work on your fitness journey!</p>
+            </div>
+            <div class="header-stats">
+                <div class="header-stat">
+                    <div class="stat-icon"><i class="fas fa-fire"></i></div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="totalWorkouts">0</span>
+                        <span class="stat-label">Total Workouts</span>
+                    </div>
+                </div>
+                <div class="header-stat">
+                    <div class="stat-icon"><i class="fas fa-hourglass"></i></div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="totalTime">0</span>
+                        <span class="stat-label">Total Minutes</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="dashboard-grid">
+            <!-- Today's Summary -->
+            <div class="card highlight-card">
+                <div class="card-header">
+                    <h3><i class="fas fa-calendar-day"></i> Today's Summary</h3>
+                </div>
+                <div class="summary-stats">
+                    <div class="stat-box">
+                        <div class="stat-icon"><i class="fas fa-flame"></i></div>
+                        <div class="stat-content">
+                            <span class="stat-number" id="todayCalories">0</span>
+                            <span class="stat-text">Calories</span>
+                        </div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                        <div class="stat-content">
+                            <span class="stat-number" id="todayTime">0</span>
+                            <span class="stat-text">Minutes</span>
+                        </div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-icon"><i class="fas fa-dumbbell"></i></div>
+                        <div class="stat-content">
+                            <span class="stat-number" id="todayExercises">0</span>
+                            <span class="stat-text">Exercises</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="card action-card">
+                <div class="card-header">
+                    <h3><i class="fas fa-bolt"></i> Quick Actions</h3>
+                </div>
+                <div class="action-buttons">
+                    <a href="planner.html" class="btn primary full-width">
+                        <i class="fas fa-plus"></i> Create Workout
+                    </a>
+                    <button class="btn secondary full-width" id="logWater">
+                        <i class="fas fa-water"></i> Log Water
+                    </button>
+                    <a href="history.html" class="btn secondary full-width">
+                        <i class="fas fa-history"></i> View History
+                    </a>
+                </div>
+            </div>
+
+            <!-- Streak Counter -->
+            <div class="card streak-card">
+                <div class="card-header">
+                    <h3><i class="fas fa-fire"></i> Workout Streak</h3>
+                </div>
+                <div class="streak-display">
+                    <div class="streak-number" id="streakCount">0</div>
+                    <div class="streak-text">Days in a Row</div>
+                    <div class="streak-message" id="streakMessage">Keep it going! 🔥</div>
+                </div>
+            </div>
+
+            <!-- Weekly Stats -->
+            <div class="card full-width-card">
+                <div class="card-header">
+                    <h3><i class="fas fa-chart-line"></i> 7-Day Progress</h3>
+                </div>
+                <canvas id="progressChart" style="max-height: 300px;"></canvas>
+            </div>
+
+            <!-- Workout Types Breakdown -->
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="fas fa-shapes"></i> Workout Types</h3>
+                </div>
+                <div id="workoutTypesStats" class="types-stats">
+                    <!-- Dynamically populated -->
+                </div>
+            </div>
+
+            <!-- Recent Workouts -->
+            <div class="card full-width-card">
+                <div class="card-header">
+                    <h3><i class="fas fa-history"></i> Recent Workouts</h3>
+                </div>
+                <div id="recentWorkouts" class="recent-list">
+                    <p style="color: rgba(255,255,255,0.7); text-align: center;">No workouts yet</p>
+                </div>
+            </div>
+
+            <!-- Fitness Tip -->
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="fas fa-lightbulb"></i> Daily Tip</h3>
+                </div>
+                <p id="dailyTip" style="color: rgba(255,255,255,0.9); line-height: 1.8;">
+                    Stay hydrated during workouts!
+                </p>
+            </div>
+
+            <!-- Weekly Stats -->
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="fas fa-chart-bar"></i> This Week</h3>
+                </div>
+                <div class="weekly-stats">
+                    <div class="stat-item">
+                        <span class="label">Workouts:</span>
+                        <span class="value" id="weeklyWorkouts">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="label">Total Time:</span>
+                        <span class="value" id="weeklyTime">0</span> min
+                    </div>
+                    <div class="stat-item">
+                        <span class="label">Avg/Day:</span>
+                        <span class="value" id="dailyAverage">0</span> min
+                    </div>
+                </div>
+            </div>
+
+            <!-- BMI Calculator -->
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="fas fa-balance-scale"></i> BMI Calculator</h3>
+                </div>
+                <div class="bmi-calculator">
+                    <input type="number" id="weight" placeholder="Weight (kg)" class="form-input">
+                    <input type="number" id="height" placeholder="Height (cm)" class="form-input">
+                    <button id="calculateBMI" class="btn primary full-width">Calculate BMI</button>
+                    <p id="bmiResult" style="color: #ffd700; text-align: center; margin-top: 1rem; font-weight: 600;"></p>
+                </div>
+            </div>
+
+            <!-- Water Intake Tracker -->
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="fas fa-tint"></i> Water Intake</h3>
+                </div>
+                <div class="water-tracker">
+                    <div class="water-display">
+                        <span class="water-count" id="waterCount">0</span>
+                        <span class="water-label">glasses today</span>
+                    </div>
+                    <div class="water-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="waterProgress" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                    <p style="color: rgba(255,255,255,0.7); font-size: 0.9rem; text-align: center; margin-top: 0.5rem;">Goal: 8 glasses</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Workout Tracker. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
