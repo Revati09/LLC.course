@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes Manager Pro</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-gradient">
+        <div class="container">
+            <a class="navbar-brand" href="#"><i class="fas fa-sticky-note"></i> Notes Manager Pro</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <button class="btn btn-outline-light me-2" id="darkModeToggle"><i class="fas fa-moon"></i> Dark Mode</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header Banner -->
+    <header class="hero-section">
+        <div class="container text-center text-white">
+            <h1 class="display-4">Organize Your Thoughts</h1>
+            <p class="lead">Manage your notes efficiently with Notes Manager Pro</p>
+        </div>
+    </header>
+
+    <!-- Dashboard -->
+    <section class="dashboard py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card dashboard-card">
+                        <div class="card-body text-center">
+                            <i class="fas fa-list-ul fa-2x text-primary"></i>
+                            <h5 class="card-title mt-2">Total Notes</h5>
+                            <h3 id="totalNotes">0</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card dashboard-card">
+                        <div class="card-body text-center">
+                            <i class="fas fa-clock fa-2x text-success"></i>
+                            <h5 class="card-title mt-2">Recently Added</h5>
+                            <p id="recentNote">No notes yet</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card dashboard-card">
+                        <div class="card-body text-center">
+                            <i class="fas fa-tags fa-2x text-warning"></i>
+                            <h5 class="card-title mt-2">Tags Used</h5>
+                            <p id="totalTags">0</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search and Add -->
+    <section class="search-add py-4 bg-light">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-search"></i></span>
+                        <input type="text" class="form-control" id="searchInput" placeholder="Search notes...">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <select class="form-select" id="tagFilter">
+                        <option value="">All Tags</option>
+                    </select>
+                </div>
+                <div class="col-md-3 text-end">
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#noteModal"><i class="fas fa-plus"></i> Add Note</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Notes Grid -->
+    <section class="notes-section py-4">
+        <div class="container">
+            <div id="notesContainer" class="row">
+                <!-- Notes will be rendered here -->
+            </div>
+            <div id="emptyState" class="text-center py-5">
+                <i class="fas fa-sticky-note fa-5x text-muted mb-3"></i>
+                <h3>No notes yet</h3>
+                <p>Start by adding your first note!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal for Add/Edit Note -->
+    <div class="modal fade" id="noteModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">Add New Note</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="noteForm">
+                        <div class="mb-3">
+                            <label for="noteTitle" class="form-label">Title</label>
+                            <input type="text" class="form-control" id="noteTitle" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="noteContent" class="form-label">Content</label>
+                            <textarea class="form-control" id="noteContent" rows="4" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="noteTags" class="form-label">Tags (comma-separated)</label>
+                            <input type="text" class="form-control" id="noteTags" placeholder="e.g., work, personal, ideas">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="saveNoteBtn">Save Note</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container position-fixed top-0 end-0 p-3">
+        <div id="notificationToast" class="toast" role="alert">
+            <div class="toast-body" id="toastMessage"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center py-3">
+        <div class="container">
+            <p>&copy; 2024 Notes Manager Pro. Built with <i class="fas fa-heart text-danger"></i></p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
